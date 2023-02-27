@@ -12,6 +12,10 @@ News
    <h3>{{ time_now|date:'d M Y' }}</h3>
    <h3> {{ next_post|default_if_none:"Чуть позже сообщим о свежих новостях!" }} </h3>
    <hr>
+   {% if perms.news.add_post %}
+   <a href="{% url 'post_create' %}">Добавить пост</a>
+   {% endif %}
+
    {% if news %}
         <table>
             <tr>
@@ -19,6 +23,11 @@ News
                 <td>Описание</td>
                 <td>Дата публикации</td>
                 <td>Категория</td>
+
+                {% if perms.news.change_post or perms.news.delete_post %}
+                <td>Действия</td>
+                {% endif %}
+
             </tr>
             {% for post in news %}
             <tr>
@@ -28,6 +37,14 @@ News
                 <td>{% for cat in post.postCategory.all %}
                     {{ cat.name }}
                     {% endfor %}
+                </td>
+                <td>
+                    {% if perms.news.change_post %}
+                    <a href="{% url 'post_update' pk=post.id %}">Изменить</a>
+                    {% endif %}
+                    {% if perms.news.delete_post %}
+                    <a href="{% url 'post_delete' pk=post.id %}">Удалить</a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
