@@ -9,6 +9,9 @@ News
 
 {% block content %}
 <h1 class="text-center">Новостная лента <span class="text-muted fs-6 fw-normal">Всего: {{ page_obj.paginator.count }}</span></h1>
+{ % if is_not_subscriber %}
+<p class ="text-center"> <a href="{% url 'subscriptions' postCategory.id %}" class ="btn btn-secondary btn-sm">Подписаться</a></p>
+{ % endif %}
 <hr>
 <ul class="list-group list-group-flush">
     {% if perms.news.add_post %}
@@ -16,13 +19,13 @@ News
     {% endif %}
 
     {% if news %}
-    {% for post in news %}
+    {% for post in category_news_list %}
         <li class="list-group-item">
             <small class="fw-bold">{{ post.dateCreation|date:'d M Y' }} </small>
             <a href="{% url 'post_detail' post.id %}">{{ post.title }}</a>
             <small class="fw-bold">Категория:
-                {% for postCategory in post.postCategory.all %}
-                    <a href="{% url 'category_list' postCategory.id %}">{{ postCategory }}</a>
+                {% for category in post.postCategory.all %}
+                    <a href="{% url 'category_list' postCategory.id %}">{{ category }}</a>
                 {% endfor %}
                 {% if perms.news.change_post %}
                 <br><a href="{% url 'post_update' pk=post.id %}">Редактировать</a>
