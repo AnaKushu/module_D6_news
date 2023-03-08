@@ -10,13 +10,11 @@ News
 {% block content %}
 <h1 class="text-center">Новостная лента<span class="text-muted fs-6 fw-normal"></span></h1>
     {% if is_not_subscriber %}
-        <p class="text-center"><a href="{% url 'subscriptions' category.id %}" class="btn btn-secondary btn-sm">Подписаться</a></p>
-    {% endif %}
-    {% if is_subscriber %}
-        <p class="text-center"><a href="{% url 'subscriptions' category.id %}" class="btn btn-secondary btn-sm">Отписаться</a></p>
+        <a href="{% url 'subscriptions' category.id %}"><button name="action" value="subscribe">Подписаться</button></a>
     {% else %}
-
+        <a href="{% url 'unsubscriptions' category.id %}"><button name="action" value="unsubscribe">Отписаться</button></a>
     {% endif %}
+
 <hr>
 
 <ul class="list-group list-group-flush">
