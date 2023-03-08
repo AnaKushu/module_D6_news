@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from datetime import datetime
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post, PostCategory
+from .models import Post, Category
 from .filters import PostFilter
 from .forms import PostForm
 from django.shortcuts import get_object_or_404, render
@@ -78,7 +78,7 @@ class CategoryListView(ListView):
     context_object_name = 'category_news_list'
 
     def get_queryset(self):
-        self.postCategory = get_object_or_404(PostCategory, id=self.kwargs['pk'])
+        self.postCategory = get_object_or_404(Category, id=self.kwargs['pk'])
         queryset = Post.objects.filter(postCategory=self.postCategory).order_by('-dateCreation')
         return queryset
 
@@ -91,8 +91,8 @@ class CategoryListView(ListView):
 @login_required
 def subscribe(request, pk):
     user = request.user
-    postCategory = PostCategory.objects.get(id=pk)
+    postCategory = Category.objects.get(id=pk)
     postCategory.subscribers.add(user)
 
-    message = 'Вы успешно подписались на рассылку новостей категории '
-    return render(request, 'subscriptions.html', {'postCategory': postCategory, 'message': message})
+    message = 'Вы успешно подписались на рассылку новостей категории'
+    return render(request, 'subscriptions.html', {'сategory': postCategory, 'message': message})
